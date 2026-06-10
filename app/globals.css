@@ -38,13 +38,6 @@
  --color-popover: var(--popover);
  --color-card-foreground: var(--card-foreground);
  --color-card: var(--card);
- --radius-sm: calc(var(--radius) * 0.6);
- --radius-md: calc(var(--radius) * 0.8);
- --radius-lg: var(--radius);
- --radius-xl: calc(var(--radius) * 1.4);
- --radius-2xl: calc(var(--radius) * 1.8);
- --radius-3xl: calc(var(--radius) * 2.2);
- --radius-4xl: calc(var(--radius) * 2.6);
 }
 
 :root {
@@ -54,10 +47,10 @@
  --card-foreground: oklch(0.145 0 0);
  --popover: oklch(1 0 0);
  --popover-foreground: oklch(0.145 0 0);
- --primary: oklch(0.205 0 0);
- --primary-foreground: oklch(0.985 0 0);
- --secondary: oklch(0.97 0 0);
- --secondary-foreground: oklch(0.205 0 0);
+ --primary: #0163ff;
+ --primary-foreground: oklch(0.985 0 0); /* keep white */
+ --secondary: #01388a;
+ --secondary-foreground: oklch(0.985 0 0); /* keep white */
  --muted: oklch(0.97 0 0);
  --muted-foreground: oklch(0.556 0 0);
  --accent: oklch(0.97 0 0);
@@ -83,15 +76,15 @@
 }
 
 .dark {
- --background: oklch(0.145 0 0);
+ --background: oklch(9.693% 0.00001 271.152);
  --foreground: oklch(0.985 0 0);
  --card: oklch(0.205 0 0);
  --card-foreground: oklch(0.985 0 0);
  --popover: oklch(0.205 0 0);
  --popover-foreground: oklch(0.985 0 0);
- --primary: oklch(0.922 0 0);
- --primary-foreground: oklch(0.205 0 0);
- --secondary: oklch(0.269 0 0);
+ --primary: #0163ff;
+ --primary-foreground: oklch(0.985 0 0);
+ --secondary: #01388a;
  --secondary-foreground: oklch(0.985 0 0);
  --muted: oklch(0.269 0 0);
  --muted-foreground: oklch(0.708 0 0);
@@ -126,4 +119,11 @@
  html {
   @apply font-sans;
  }
+ button {
+  @apply cursor-pointer;
+ }
+}
+
+.flex-stretch {
+ flex: 1 1 auto;
 }

@@ -1,12 +1,9 @@
-import { NeoroLogoIcon } from "@/assets/icons";
-import { Button } from "@/components/ui/button";
+import SiteLogo from "@/assets/site-logo";
 
 function Homepage() {
  return (
   <>
-   <Button className="text-lg">
-    Neoro <NeoroLogoIcon />
-   </Button>
+   <SiteLogo className="absolute top-1/2 left-1/2 size-40 -translate-x-1/2 -translate-y-1/2" />
   </>
  );
 }
