@@ -1,63 +1,63 @@
 name: Deploy to EC2
 
 on:
- push:
-  branches:
-   - deployment
+  push:
+    branches:
+      - deployment
 
 jobs:
- deploy:
-  runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-latest
 
-  steps:
-   - name: Checkout code
-     uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-   - name: Setup pnpm
-     uses: pnpm/action-setup@v4
-     with:
-      version: 11
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11
 
-   - name: Setup Node.js
-     uses: actions/setup-node@v4
-     with:
-      node-version: 24
-      cache: "pnpm"
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
 
-   - name: Install dependencies
-     run: pnpm install --frozen-lockfile
-     env:
-      HUSKY: 0
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        env:
+          HUSKY: 0
 
-   - name: Lint
-     run: pnpm run lint
-     env:
-      HUSKY: 0
+      - name: Lint
+        run: pnpm run lint
+        env:
+          HUSKY: 0
 
-   - name: Build
-     run: pnpm run build
-     env:
-      HUSKY: 0
+      - name: Build
+        run: pnpm run build
+        env:
+          HUSKY: 0
 
-   - name: Deploy to EC2
-     uses: appleboy/scp-action@v0.1.7
-     with:
-      host: ${{ secrets.EC2_HOST }}
-      username: ubuntu
-      key: ${{ secrets.EC2_SSH_KEY }}
-      source: ".next/,public/,package.json,pnpm-lock.yaml,next.config.ts"
-      target: "/home/ubuntu/neoro"
+      - name: Deploy to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: ".next/,public/,package.json,pnpm-lock.yaml,next.config.ts"
+          target: "/home/ubuntu/neoro"
 
-    - name: Restart app on EC2
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ubuntu
-        key: ${{ secrets.EC2_SSH_KEY }}
-        script: |
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          cd /home/ubuntu/neoro
-          pnpm install --prod --frozen-lockfile
-          pm2 restart neoro || pm2 start pnpm --name "neoro" -- start
-          pm2 save
+      - name: Restart app on EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            cd /home/ubuntu/neoro
+            pnpm install --prod --frozen-lockfile
+            pm2 restart neoro || pm2 start pnpm --name "neoro" -- start
+            pm2 save
