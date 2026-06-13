@@ -48,14 +48,16 @@ jobs:
       source: ".next/,public/,package.json,pnpm-lock.yaml,next.config.ts"
       target: "/home/ubuntu/neoro"
 
-   - name: Restart app on EC2
-     uses: appleboy/ssh-action@v1.0.3
-     with:
-      host: ${{ secrets.EC2_HOST }}
-      username: ubuntu
-      key: ${{ secrets.EC2_SSH_KEY }}
-      script: |
-       cd /home/ubuntu/neoro
-       pnpm install --prod --frozen-lockfile
-       pm2 restart neoro || pm2 start pnpm --name "neoro" -- start
-       pm2 save
+    - name: Restart app on EC2
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ubuntu
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          cd /home/ubuntu/neoro
+          pnpm install --prod --frozen-lockfile
+          pm2 restart neoro || pm2 start pnpm --name "neoro" -- start
+          pm2 save
